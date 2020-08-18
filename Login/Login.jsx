@@ -27,10 +27,10 @@ class InputForm extends React.Component {
     // login checking: using callback function
     logIn(event){
        event.preventDefault();
-       console.log("check login");
        let key = "(password)", password = this.state.password;
  
        var get = function(user, callback){
+          
             var ref = database.collection(user).doc("login").collection("password");
             ref.get().then(querySnapshot => {
                 querySnapshot.forEach(doc => {
@@ -42,22 +42,20 @@ class InputForm extends React.Component {
                 if( typeof callback === 'function' ){
                     callback();
                 }
-            }, 1000);
+            }, 1200);
        }
  
        var check = function(){
           if(key == password){
             alert("登入正確");
-            console.log("click");
             document.getElementById("enter-link").click();  // enter user page
           }
           else{
              alert("登入錯誤");
+             console.log("correct:", key, "; you enter:", password);
           }
-         // document.getElementById("password").value = "";
        }
        get(window.userName, check);  // callback function 
-       
     }
  
     // change user's password
@@ -78,7 +76,7 @@ class InputForm extends React.Component {
             document.getElementById("tester").style.cursor = "default";
             // current state info
             this.setState({
-                hint: <p>Please enter previous password.</p>,
+                hint: <p>Please enter your previous password.</p>,
                 condition: "Submit",
             });
             // hide the Login button
@@ -87,16 +85,14 @@ class InputForm extends React.Component {
  
        // check current password is correct
        else if(event.target.value == "Submit"){
-          console.log(this.props.correct)
           if(this.props.correct == this.state.password){   
              this.setState({
-                hint: <p>Password correct. Enter new one.</p>,
+                hint: <p>Correct. Enter your new password.</p>,
                 condition: "Change"
              })
           }
           else{
-             console.log("error")
-             this.setState({hint: <p>Your password error.</p>})
+             this.setState({hint: <p>Your password is error.</p>})
           }
        }
  
@@ -104,7 +100,7 @@ class InputForm extends React.Component {
         else if(event.target.value == "Change"){
             if(this.state.password == this.props.correct){
                 this.setState({
-                    hint: <p>Your Password is equal to current one.<br/>Please enter new one.</p>,
+                    hint: <p>Your Password is equal to the current one.<br/>Please enter another key.</p>,
                 })
             }
             else{
@@ -168,12 +164,10 @@ class InputForm extends React.Component {
              this.setState({correct: doc.data()["password"]})
           });
        });
-       console.log(this.state.correct)
     }
  
  
     UNSAFE_componentWillMount(){
-       console.log(this.state.correct);
        window.userName = "tester";
        this.readPassword(window.userName);  // get password first(: read data is too slow)
     }
