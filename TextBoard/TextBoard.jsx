@@ -61,7 +61,6 @@ class TextList extends React.Component{
             querySnapshot.forEach(doc => {
                 let node = this.createBlockElement(doc.data(), doc.id);
                 if(doc.exists){
-                    console.log(doc.data()["title"], doc.data()["content"]);
                     // append
                     document.getElementById("article-list").appendChild(node);
 
@@ -146,7 +145,6 @@ class InputBlock extends React.Component{
     }
 
     submitForm(event) {
-        console.log(`SUBMIT:${this.state.content}`);
         const date = new Date().toString()
         var recv = document.getElementById("select-recv").value.toLowerCase();
         if(recv == "recv"){
@@ -155,7 +153,6 @@ class InputBlock extends React.Component{
             return;
         }
         var send = getUser(this.props.match.path.toString());
-        console.log(recv, send);
 
         var ref = database.collection(recv).doc("mailbox").collection("message").doc(date)
         ref.set({
@@ -167,6 +164,7 @@ class InputBlock extends React.Component{
             title: "",
             content: ""
         })
+        console.log(`SUBMIT:${this.state.content}`);
         alert("訊息成功送出去惹~");
     }
 
@@ -220,15 +218,12 @@ class InputBlock extends React.Component{
 function getUser(path){
     var index = path.indexOf("/", 1)
     var name = path.substring(1, index);
-    console.log(name);
     return name;
 }
 
 class UserBoard extends React.Component{
     render(){
         var name = window.userName;
-        console.log("---")
-
         var content = <TextList user={name}/>
         if(name == "none"){
             content = <ReloadPage/>;
@@ -300,12 +295,8 @@ class TextBoard extends React.Component{
     }
 
     render(){
-        console.log("render");
-        console.log(this.state.list.length)
-        console.log("window", window.userName);
         return(
             // user page for different functional page
-            // <BrowserRouter>
                 <div id="tmp">
                     <div>
                         <div id="item-select">
@@ -320,7 +311,6 @@ class TextBoard extends React.Component{
                             {/* <Route path="/" component={LogOutPage} ></Route> */}
                     </div>
                 </div>
-            // </BrowserRouter>
         )
     }
 }
