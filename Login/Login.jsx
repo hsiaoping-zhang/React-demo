@@ -30,6 +30,7 @@ class InputForm extends React.Component {
        let key = "(password)", password = this.state.password;
  
        var get = function(user, callback){
+          
             var ref = database.collection(user).doc("login").collection("password");
             ref.get().then(querySnapshot => {
                 querySnapshot.forEach(doc => {
@@ -41,7 +42,7 @@ class InputForm extends React.Component {
                 if( typeof callback === 'function' ){
                     callback();
                 }
-            }, 1000);
+            }, 1200);
        }
  
        var check = function(){
@@ -51,6 +52,7 @@ class InputForm extends React.Component {
           }
           else{
              alert("登入錯誤");
+             console.log("correct:", key, "; you enter:", password);
           }
        }
        get(window.userName, check);  // callback function 
@@ -85,7 +87,7 @@ class InputForm extends React.Component {
        else if(event.target.value == "Submit"){
           if(this.props.correct == this.state.password){   
              this.setState({
-                hint: <p>Password correct. Enter Your new one.</p>,
+                hint: <p>Password correct. Enter new one.</p>,
                 condition: "Change"
              })
           }
@@ -146,7 +148,7 @@ class InputForm extends React.Component {
     constructor(props) {
        super(props);
        this.state = { 
-          words: "Hi Hi ^ ^",
+          words: "Please Login",
           correct: ""
        };
        this.selectId = this.selectId.bind(this);
@@ -162,11 +164,11 @@ class InputForm extends React.Component {
              this.setState({correct: doc.data()["password"]})
           });
        });
-       console.log(this.state.correct)
     }
  
  
     UNSAFE_componentWillMount(){
+       window.userName = "tester";
        this.readPassword(window.userName);  // get password first(: read data is too slow)
     }
     
@@ -177,12 +179,12 @@ class InputForm extends React.Component {
 
         if(event.target.id == "penguin"){
             document.getElementById("tester").style.zIndex = -1;
-            this.setState({words: "Please Login"});
+            this.setState({words: "Hi Hi ^ ^"});
             window.userName = "penguin";
         }
         else{
             document.getElementById("tester").style.zIndex = 0;
-            this.setState({words: "Hi Hi ^ ^"});
+            this.setState({words: "Please Login"});
             window.userName = "tester";
         }
         this.readPassword(event.target.id);

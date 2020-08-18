@@ -82,6 +82,7 @@ class TextList extends React.Component{
                             // remove from screen
                             var element = document.getElementById(doc.id);
                             element.remove();
+                            console.log("remove success");
                         };
                     }
                     if(this.props.user != "public"){
@@ -163,6 +164,7 @@ class InputBlock extends React.Component{
             title: "",
             content: ""
         })
+        console.log(`SUBMIT:${this.state.content}`);
         alert("訊息成功送出去惹~");
     }
 
@@ -223,6 +225,14 @@ class UserBoard extends React.Component{
     render(){
         var name = window.userName;
         var content = <TextList user={name}/>
+        if(name == "none"){
+            content = <ReloadPage/>;
+            window.setTimeout(function(){
+                document.getElementById("login-page").click();
+            }, 2000);
+        }
+            
+        
         return(
             <div>
                 {content}
@@ -233,7 +243,14 @@ class UserBoard extends React.Component{
 
 class PublicBoard extends React.Component{
     render(){
+        
         var content = <TextList user="public"/>
+        if(window.userName  == "none"){
+            content = <ReloadPage/>;
+            window.setTimeout(function(){
+                document.getElementById("login-page").click();
+            }, 2000);
+        }
         return(
             <div>
                 {content}
@@ -242,8 +259,8 @@ class PublicBoard extends React.Component{
     }
 }
 
-// 之後要想辦法跳回去 login 的頁面
-class LogOutPage extends React.Component{
+// Reload Fail
+class ReloadPage extends React.Component{
     constructor(props){
         super(props);
     }
@@ -253,7 +270,7 @@ class LogOutPage extends React.Component{
             textAlign: "center"
         }
         return(
-            <p style={pStyle}>Please reload this page.</p>
+            <p style={pStyle}>目前還不支援重刷網頁，即將回到登入頁面。</p>
         )
     }
 }
@@ -266,31 +283,34 @@ class TextBoard extends React.Component{
             list: [],
         }
         this.click = this.click.bind(this);
+        this.logoutClick = this.logoutClick.bind(this);
     }
 
     click(){
         this.setState({list: this.state.list});
     }
 
+    logoutClick(event){
+        window.userName = "tester";
+    }
+
     render(){
         return(
             // user page for different functional page
-            <BrowserRouter>
                 <div id="tmp">
                     <div>
                         <div id="item-select">
-                            <Link to="/public" className="board-btn" id="board-public" >Public</Link>
+                            <Link to={`${this.props.match.url}/public`} className="board-btn" id="board-public" >Public</Link>
                             <Link to={`${this.props.match.url}/message`} className="board-btn" id="board-text" >Message</Link>
                             <Link to={`${this.props.match.url}/send`}  className="board-btn" id="board-send">Send</Link>
-                            <Link to="/" className="board-btn" >Log out</Link>
+                            <Link to="/" className="board-btn" id="logout-btn" onClick={this.logoutClick}>Log out</Link>
                         </div>
-                            <Route exact path="/public" component={PublicBoard} ></Route>
-                            <Route exact path={`${this.props.match.path}/message`} component={UserBoard}></Route>
-                            <Route exact path={`${this.props.match.path}/send`} component={InputBlock}></Route>
-                            <Route exact path="/" component={LogOutPage} ></Route>
+                            <Route path={`${this.props.match.path}/public`} component={PublicBoard} ></Route>
+                            <Route path={`${this.props.match.path}/message`} component={UserBoard}></Route>
+                            <Route path={`${this.props.match.path}/send`} component={InputBlock}></Route>
+                            {/* <Route path="/" component={LogOutPage} ></Route> */}
                     </div>
                 </div>
-            </BrowserRouter>
         )
     }
 }
