@@ -27,7 +27,6 @@ class InputForm extends React.Component {
     // login checking: using callback function
     logIn(event){
        event.preventDefault();
-       console.log("check login");
        let key = "(password)", password = this.state.password;
  
        var get = function(user, callback){
@@ -84,7 +83,6 @@ class InputForm extends React.Component {
  
        // check current password is correct
        else if(event.target.value == "Submit"){
-          console.log(this.props.correct)
           if(this.props.correct == this.state.password){   
              this.setState({
                 hint: <p>Password correct. Enter Your new one.</p>,
@@ -92,7 +90,6 @@ class InputForm extends React.Component {
              })
           }
           else{
-             console.log("error")
              this.setState({hint: <p>Your password error.</p>})
           }
        }
@@ -170,7 +167,6 @@ class InputForm extends React.Component {
  
  
     UNSAFE_componentWillMount(){
-       console.log(this.state.correct)
        this.readPassword(window.userName);  // get password first(: read data is too slow)
     }
     
