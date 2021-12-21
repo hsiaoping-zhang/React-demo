@@ -17,6 +17,8 @@ DataBase : `Firestore`
 - `penguin`(普通使用者) 密碼為 penguin (可更改)
 - `tester`(管理者) 密碼為 test (**不可更改**)
 
+註 : 圖片上的`鄭記`蔥肉餅是我臺南必吃的美食 > < `哞熹哞熹`則是我很喜歡抹茶拿鐵的一家店所以畫上去的角色~
+
 <img src="https://i.imgur.com/3bOB038.png" width="500"/>
 <img src="https://i.imgur.com/wkNPBg1.png" width="500"/>
 
