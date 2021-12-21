@@ -149,7 +149,8 @@ class InputForm extends React.Component {
        super(props);
        this.state = { 
           words: "Please Login",
-          correct: ""
+          correct: "",
+          pwdHint: "",
        };
        this.selectId = this.selectId.bind(this);
        this.readPassword = this.readPassword.bind(this);
@@ -180,11 +181,13 @@ class InputForm extends React.Component {
         if(event.target.id == "penguin"){
             document.getElementById("tester").style.zIndex = -1;
             this.setState({words: "Hi Hi ^ ^"});
+            this.setState({pwdHint: "penguin"});
             window.userName = "penguin";
         }
         else{
             document.getElementById("tester").style.zIndex = 0;
             this.setState({words: "Please Login"});
+            this.setState({pwdHint: "test"});
             window.userName = "tester";
         }
         this.readPassword(event.target.id);
@@ -200,6 +203,9 @@ class InputForm extends React.Component {
 
                 <div id="login-words">
                     {this.state.words}
+                </div>
+                <div>default password:
+                    {this.state.pwdHint}
                 </div>
                 <InputForm correct={this.state.correct} charater={window.userName}/>
             </div>
